@@ -368,41 +368,6 @@ require("lazy").setup({
     event = "InsertEnter",
     config = true,
   },
--- Treesitter: parsing for highlighting + markdown rendering
-  {
-    "nvim-treesitter/nvim-treesitter",
-    branch = "master",
-    build = ":TSUpdate",
-    event = { "BufReadPost", "BufNewFile" },
-    config = function()
-      require("nvim-treesitter.configs").setup({
-        ensure_installed = {
-          "markdown", "markdown_inline",
-          "c_sharp", "python", "lua",
-          "typescript", "tsx", "javascript",
-          "json", "yaml", "bash",
-        },
-        highlight = { enable = true },
-      })
-    end,
-  },
-
-  -- Toggle in-buffer markdown rendering
-  {
-    "MeanderingProgrammer/render-markdown.nvim",
-    ft = "markdown",
-    dependencies = {
-      "nvim-treesitter/nvim-treesitter",
-      "nvim-tree/nvim-web-devicons",
-    },
-    opts = {
-      completions = { blink = { enabled = true } },
-      -- enabled = false,  -- uncomment to OPEN in raw mode and toggle render ON
-    },
-    keys = {
-      { "<leader>m", "<cmd>RenderMarkdown toggle<cr>", desc = "Toggle markdown render" },
-    },
-  },
 
 }, {})
 

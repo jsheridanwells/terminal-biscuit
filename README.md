@@ -21,8 +21,6 @@ Feel free to fork it and adapt it for your own setup.
 - **Telescope** — fuzzy file finder (`Ctrl+P`)
 - **neo-tree** — file explorer sidebar (`Ctrl+Shift+E`)
 - **bufferline** — VS Code-style buffer tabs (`Alt+1–9` to jump)
-- **Treesitter** — syntax highlighting for C#, Python, TypeScript/TSX, Lua, Markdown, and more
-- **render-markdown.nvim** — toggle in-buffer Markdown rendering (`<leader>m`)
 - **toggleterm** — floating terminal (`Ctrl+\``)
 - **vim-tmux-navigator** / **better-vim-tmux-resizer** — seamless pane navigation and resizing across Neovim splits and tmux panes
 
@@ -41,7 +39,7 @@ Feel free to fork it and adapt it for your own setup.
 
 | Requirement | Notes |
 |-------------|-------|
-| Neovim ≥ 0.11 | Required for the `vim.lsp.config()` API used in `init.lua` |
+| Neovim ≥ 0.12 | Required for the `vim.lsp.config()` API used in `init.lua` |
 | tmux ≥ 3.3 | For extended-key passthrough (`extended-keys always`) |
 | Git | Used by lazy.nvim and Telescope |
 | A [Nerd Font](https://www.nerdfonts.com/) | Icons in neo-tree, bufferline, and the status bar |
@@ -66,7 +64,7 @@ bash setup.sh
 
 ### 1. Bootstrap Neovim plugins
 
-Launch `nvim`. lazy.nvim will clone every plugin, Mason will pull the LSP servers, and Treesitter will compile its parsers. Let it finish, then quit and relaunch once.
+Launch `nvim`. lazy.nvim will clone every plugin and Mason will pull the LSP servers. Let it finish, then quit and relaunch once.
 
 ### 2. C# / Roslyn LSP (large download, manual)
 
@@ -138,12 +136,6 @@ Only the custom / non-default bindings are listed. The leader key in Neovim is `
 |-----|--------|
 | `Enter` | Accept completion |
 | `Ctrl+N` / `Ctrl+P` | Next / previous candidate |
-
-**Markdown**
-
-| Key | Action |
-|-----|--------|
-| `Space m` | Toggle in-buffer Markdown rendering |
 
 ### tmux
 
