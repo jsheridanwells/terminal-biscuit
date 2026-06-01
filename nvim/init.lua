@@ -139,14 +139,14 @@ require("window_close")
 -- Plugins
 -- ============================================================
 require("lazy").setup({
-  -- Colorscheme: Catppuccin Mocha (easy to swap later)
+  -- Colorscheme: Nordic
   {
-    "catppuccin/nvim",
-    name = "catppuccin",
+    "gbprod/nord.nvim",
+    lazy = false,
     priority = 1000,
     config = function()
-      require("catppuccin").setup({ flavour = "mocha" })
-      vim.cmd.colorscheme("catppuccin-mocha")
+      require("nord").setup({})
+      vim.cmd.colorscheme("nord")
     end,
   },
   -- File tree (left sidebar, VS Code-style)
@@ -288,7 +288,14 @@ require("lazy").setup({
             vim.bo.tabstop = 2
             vim.bo.softtabstop = 2
           end,
-        })
+      })
+
+      -- Tree-sitter
+      vim.api.nvim_create_autocmd("FileType", {
+        callback = function()
+          pcall(vim.treesitter.start)
+        end,
+      })
 
       vim.lsp.config("ruff", {
         on_attach = function(client, _)
@@ -368,6 +375,12 @@ require("lazy").setup({
     event = "InsertEnter",
     config = true,
   },
+  {
+    'nvim-treesitter/nvim-treesitter',
+    branch = 'main',
+    lazy = false,
+    build = ':TSUpdate',
+   },
 
 }, {})
 
