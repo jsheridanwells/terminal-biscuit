@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# link.sh — symlink nvim + tmux configs from ~/.config to this repo
+# link.sh — symlink nvim + tmux + alacritty configs from ~/.config to this repo
 # existing copies are backed up
 set -euo pipefail
 
@@ -12,6 +12,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}"
 NVIM_DIR="$CONFIG/nvim"
 TMUX_CONF="$CONFIG/tmux.conf"
+ALACRITTY_DIR="$CONFIG/alacritty"
 
 STAMP="$(date +%Y%m%d-%H%M%S)"
 
@@ -57,6 +58,11 @@ echo
 # --- tmux ---------------------------------------------------------------------
 echo "tmux  →  $TMUX_CONF"
 link_config "$SCRIPT_DIR/tmux/tmux.conf" "$TMUX_CONF"
+echo
+
+# --- alacritty ----------------------------------------------------------------
+echo "alacritty  →  $ALACRITTY_DIR"
+link_config "$SCRIPT_DIR/alacritty" "$ALACRITTY_DIR"
 echo
 
 echo "Done."

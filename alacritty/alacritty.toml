@@ -1,0 +1,39 @@
+# ════════════════════════════════════════════════════════════════════════════
+#  alacritty.toml — cross-platform (Linux/Wayland + macOS)
+#  Repo path: alacritty/alacritty.toml  →  installs to ~/.config/alacritty/
+#
+#  Translated 1:1 from the old foot.ini. Pairs with tmux.conf, which must carry
+#      set -as terminal-features 'xterm-256color:extkeys'
+#  so Ctrl+Shift/Ctrl+. /Ctrl+` reach nvim through tmux (see TERM note below).
+# ════════════════════════════════════════════════════════════════════════════
+
+[general]
+# Nord palette lives in its own file so the theme stays swappable.
+# Home-relative path works whether deployed by setup.sh (copy) or link.sh (symlink).
+import = ["~/.config/alacritty/nord.toml"]
+
+[env]
+# Deliberately boring. Alacritty's native TERM=alacritty needs its terminfo
+# entry installed — present on Arch, MISSING on stock macOS (→ "unsuitable
+# terminal" log noise). We live inside tmux (which sets tmux-256color
+# internally) and truecolor comes from tmux's *:RGB line, so the outer TERM is
+# nearly cosmetic. xterm-256color exists everywhere and keeps both machines
+# identical and quiet.
+TERM = "xterm-256color"
+
+[font]
+size = 9.0
+normal = { family = "JetBrainsMono Nerd Font", style = "Regular" }
+
+[selection]
+# = foot's  selection-target=clipboard
+save_to_clipboard = true
+
+[[keyboard.bindings]]
+# = foot's  clipboard-paste=Control+v
+# Note: this shadows nvim's visual-block (Ctrl+V), exactly as the old foot
+# binding did. Delete this block to get block-select back (paste reverts to
+# the default Ctrl+Shift+V).
+key = "V"
+mods = "Control"
+action = "Paste"

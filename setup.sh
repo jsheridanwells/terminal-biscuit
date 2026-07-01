@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# init.sh — install nvim + tmux configs into ~/.config
+# init.sh — install nvim + tmux + alacritty configs into ~/.config
 # existing copies are backed up
 set -euo pipefail
 
@@ -12,6 +12,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}"
 NVIM_DIR="$CONFIG/nvim"
 TMUX_DIR="$CONFIG/tmux"
+ALACRITTY_DIR="$CONFIG/alacritty"
 
 STAMP="$(date +%Y%m%d-%H%M%S)"
 
@@ -56,6 +57,13 @@ echo
 echo "tmux  →  $TMUX_DIR"
 mkdir -p "$TMUX_DIR"
 install_file "$SCRIPT_DIR/tmux/tmux.conf" "$TMUX_DIR/tmux.conf"
+echo
+
+# --- alacritty ----------------------------------------------------------------
+echo "alacritty  →  $ALACRITTY_DIR"
+mkdir -p "$ALACRITTY_DIR"
+install_file "$SCRIPT_DIR/alacritty/alacritty.toml" "$ALACRITTY_DIR/alacritty.toml"
+install_file "$SCRIPT_DIR/alacritty/nord.toml"      "$ALACRITTY_DIR/nord.toml"
 echo
 
 echo "Done."
