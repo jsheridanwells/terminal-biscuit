@@ -37,3 +37,7 @@ save_to_clipboard = true
 key = "V"
 mods = "Control"
 action = "Paste"
+
+# disable option as compose key on macos
+[window]
+option_as_alt = "Both"
