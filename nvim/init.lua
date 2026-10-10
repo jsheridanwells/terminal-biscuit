@@ -169,6 +169,10 @@ require("lazy").setup({
         filesystem = {
           follow_current_file = { enabled = true },
           hijack_netrw_behavior = "open_default",
+          filtered_items = {
+            hide_dotfiles = false,    -- show .github, .gitignore, .env, etc.
+            hide_gitignored = true,   -- but keep node_modules/obj/bin hidden (press H to toggle)
+          },
         },
         window = { width = 30 },
       })
@@ -185,7 +189,7 @@ require("lazy").setup({
         function()
           local git_root = vim.fn.systemlist("git rev-parse --show-toplevel 2>/dev/null")[1]
           local cwd = (git_root and git_root ~= "") and git_root or vim.fn.getcwd()
-          require("telescope.builtin").find_files({ cwd = cwd })
+          require("telescope.builtin").find_files({ cwd = cwd, hidden = true })
         end,
         desc = "Find files (from git root)",
       },
@@ -302,6 +306,38 @@ require("lazy").setup({
           -- let basedpyright own hover; ruff just lints and fixes
           client.server_capabilities.hoverProvider = false
         end,
+      })
+
+      -- C#: make Roslyn behave more like Visual Studio / Rider.
+      -- The server ships these OFF; this is what turns "generic" Ctrl+.
+      -- suggestions into project-aware ones. All of it is invisible until you
+      -- invoke completion / code actions, so the editor stays clean by default.
+      vim.lsp.config("roslyn", {
+        settings = {
+          -- The big one: suggest types from namespaces you haven't imported
+          -- yet, and auto-insert the `using` when you accept the completion.
+          ["csharp|completion"] = {
+            dotnet_show_completion_items_from_unimported_namespaces = true,
+            dotnet_show_name_completion_suggestions = true,
+            dotnet_provide_regex_completions = true,
+          },
+          -- Analyze the whole solution (like VS) instead of just open files, so
+          -- diagnostics and quick-fixes see the full project graph.
+          -- If a large work monorepo feels sluggish, drop either to "openFiles".
+          ["csharp|background_analysis"] = {
+            dotnet_analyzer_diagnostics_scope = "fullSolution",
+            dotnet_compiler_diagnostics_scope = "fullSolution",
+          },
+          -- Let symbol search reach into reference assemblies for richer results.
+          ["csharp|symbol_search"] = {
+            dotnet_search_reference_assemblies = true,
+          },
+          -- F12 into framework types (String, List<T>, …) decompiles to source
+          -- instead of dead-ending — the VS/Rider "go to definition" feel.
+          ["navigation"] = {
+            dotnet_navigate_to_decompiled_sources = true,
+          },
+        },
       })
 
       require("mason").setup({

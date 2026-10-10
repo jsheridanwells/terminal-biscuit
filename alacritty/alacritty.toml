@@ -2,9 +2,9 @@
 #  alacritty.toml — cross-platform (Linux/Wayland + macOS)
 #  Repo path: alacritty/alacritty.toml  →  installs to ~/.config/alacritty/
 #
-#  Translated 1:1 from the old foot.ini. Pairs with tmux.conf, which must carry
-#      set -as terminal-features 'xterm-256color:extkeys'
-#  so Ctrl+Shift/Ctrl+. /Ctrl+` reach nvim through tmux (see TERM note below).
+#  Translated 1:1 from the old foot.ini, plus CSI-u key bindings (bottom) that
+#  carry Ctrl+Shift+E / Ctrl+. / Ctrl+` through tmux to nvim — tmux can't
+#  negotiate Alacritty's keyboard protocol, so we emit those sequences directly.
 # ════════════════════════════════════════════════════════════════════════════
 
 [general]
@@ -38,6 +38,33 @@ key = "V"
 mods = "Control"
 action = "Paste"
 
-# disable option as compose key on macos
-[window]
-option_as_alt = "Both"
+# ── Extended-key passthrough for tmux ────────────────────────────────────────
+# nvim distinguishes Ctrl+Shift+E / Ctrl+. / Ctrl+` from their plain forms via
+# the Kitty keyboard protocol. Alacritty speaks it natively (that's why these
+# work OUTSIDE tmux) — but tmux only partially implements it and can't turn it
+# on for Alacritty, so inside tmux those combos collapse to their legacy,
+# indistinguishable bytes and the nvim mappings never fire.
+#
+# Fix: emit the CSI-u escape sequences ourselves, unconditionally. tmux passes
+# the bytes straight through and nvim decodes them the same in or out of tmux —
+# nothing to negotiate, nothing to un-negotiate.
+#
+# Sequence format:  ESC [ <keycode> ; <modifiers> u
+#   keycode   = unicode codepoint of the BASE key   (e=101, .=46, `=96)
+#   modifiers = 1 + Shift(1) + Alt(2) + Ctrl(4)      → Ctrl=5, Ctrl+Shift=6
+# NOTE: TOML only allows \u escapes, never \x — \u001b is ESC.
+
+[[keyboard.bindings]]
+key = "E"
+mods = "Control|Shift"
+chars = "\u001b[101;6u"   # <C-S-e>  → neo-tree toggle
+
+[[keyboard.bindings]]
+key = "."
+mods = "Control"
+chars = "\u001b[46;5u"    # <C-.>    → LSP code action
+
+[[keyboard.bindings]]
+key = "`"
+mods = "Control"
+chars = "\u001b[96;5u"    # <C-`>    → toggle terminal
