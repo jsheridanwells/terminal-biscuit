@@ -11,7 +11,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # --- target locations (honor XDG, fall back to ~/.config) ---------------------
 CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}"
 NVIM_DIR="$CONFIG/nvim"
-TMUX_CONF="$CONFIG/tmux.conf"
+TMUX_DIR="$CONFIG/tmux"
 ALACRITTY_DIR="$CONFIG/alacritty"
 
 STAMP="$(date +%Y%m%d-%H%M%S)"
@@ -56,8 +56,8 @@ link_config "$SCRIPT_DIR/nvim" "$NVIM_DIR"
 echo
 
 # --- tmux ---------------------------------------------------------------------
-echo "tmux  →  $TMUX_CONF"
-link_config "$SCRIPT_DIR/tmux/tmux.conf" "$TMUX_CONF"
+echo "tmux  →  $TMUX_DIR"
+link_config "$SCRIPT_DIR/tmux" "$TMUX_DIR"
 echo
 
 # --- alacritty ----------------------------------------------------------------
@@ -69,5 +69,5 @@ echo "Done."
 echo
 echo "Next steps"
 echo "──────────"
-echo "  Reload tmux:  tmux source-file \"$TMUX_CONF\""
+echo "  Reload tmux:  tmux source-file \"$TMUX_DIR/tmux.conf\""
 echo "  (or press  prefix + r)"

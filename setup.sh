@@ -57,6 +57,7 @@ echo
 echo "tmux  →  $TMUX_DIR"
 mkdir -p "$TMUX_DIR"
 install_file "$SCRIPT_DIR/tmux/tmux.conf" "$TMUX_DIR/tmux.conf"
+install_file "$SCRIPT_DIR/tmux/move-pane.sh" "$TMUX_DIR/move-pane.sh"
 echo
 
 # --- alacritty ----------------------------------------------------------------
